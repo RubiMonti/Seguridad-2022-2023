@@ -4,7 +4,7 @@ FLAGS = -Wshadow -Wall -g
 
 NAME = caesar
 
-ALL = caesar #caesar_utils
+ALL = caesar caesar_utils
 
 SRC = $(addsuffix .c, $(ALL))
 
