@@ -2,25 +2,32 @@ CC = gcc
 
 FLAGS = -Wshadow -Wall -g
 
-NAME = caesar
+CAESAR = caesar
 
-ALL = caesar caesar_utils
+BREAK = breakcaesar
+
+ALL = caesar_utils
 
 SRC = $(addsuffix .c, $(ALL))
 
 OBJS = 	$(addsuffix .o, $(ALL))
 
-$(NAME):
-	$(CC) $(FLAGS) -c $(SRC)
-	$(CC) -o $(NAME) $(OBJS)
+all: $(CAESAR) $(BREAK)
 
-all: $(NAME)
+$(CAESAR):
+	$(CC) $(FLAGS) -c $(SRC) $(CAESAR).c
+	$(CC) -o $(CAESAR) $(OBJS) $(CAESAR).o
+
+$(BREAK):
+	$(CC) $(FLAGS) -c $(SRC) $(BREAK).c
+	$(CC) -o $(BREAK) $(OBJS) $(BREAK).o
 
 clean: 
 	rm -f *.o
 
 fclean: clean
-	rm -f $(NAME) *.gch
+	rm -f $(CAESAR)
+	rm -f $(BREAK)
 
 re: fclean all
 
