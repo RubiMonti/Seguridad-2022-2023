@@ -9,24 +9,22 @@ void parse_text(char *stream){
     }
 }
 
-int caesar_text(char *stream, int key, int mode){
-    int increment = 0;
-    if (mode == 0)
-        increment = key;
-    else if (mode == 1)
-        increment = -key;
-    else{
-        printf("Error in cryipting, please insert a valid mode");
-        return -1;
-    }
+void caesar(char *stream, int key){
     for (int i = 0; i<strlen(stream);i++){
         if (stream[i] != 32){
-            stream[i] += increment;
+            stream[i] += key;
             if (stream[i] > 90)
                 stream[i] -= 25;
-            else if (stream[i] < 65)
-            stream[i] += 25;
         }
     }
-    return 0;
+}
+
+void breakcaesar(char *stream, int key){
+    for (int i = 0; i<strlen(stream);i++){
+        if (stream[i] != 32){
+            stream[i] -= key;
+            if (stream[i] < 65)
+                stream[i] += 25;
+        }
+    }
 }

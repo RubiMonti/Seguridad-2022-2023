@@ -12,9 +12,10 @@ int main(int argc, char* argv[]){
     // Le ponemos todos los caracteres a mayúsculas y cambiamos los caracteres especiales por espacios
     parse_text(stream);
     // Lo ciframos con caesar
-    caesar_text(stream, key, 0);
+    caesar(stream, key);
     // Lo imprimimos en el fichero texto_cifrado.txt
     int fd = open("./texto_cifrado.txt", O_WRONLY|O_CREAT|O_TRUNC, 00777);
     dprintf(fd, "%s\n", stream);
+    free(stream);
     return 0;
 }

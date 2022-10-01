@@ -11,10 +11,12 @@ int main(int argc, char* argv[]){
     for (int key = 1; key < 25; key++){
         temp = malloc(sizeof(char)*100);
         strcpy(temp, stream);
-        caesar_text(temp, key, 1);
+        breakcaesar(temp, key);
         printf("%d: %s\n", key, temp);
+        free(temp);
     }
     int fd = open("./texto_descifrado.txt", O_WRONLY|O_CREAT|O_TRUNC, 00777);
     dprintf(fd, "%s\n", stream);
+    free(stream);
     return 0;
 }
