@@ -11,11 +11,16 @@
 
 //# include <sys/wait.h>
 
-struct {
-    int a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,y,z;
-}
+typedef struct s_dict{
+    int letters[26];
+    int total;
+}   dict_t;
 
 void parse_text(char *stream);
-int caesar_text(char *stream, int key, int mode);
+void init_dict(dict_t *dict);
+void print_frequencies(dict_t dict);
+float compare_frequencies(dict_t dict);
+void caesar(char *stream, int key);
+void breakcaesar(char *stream, int key, dict_t *dict);
 
 #endif  // CAESAR_UTILS_H
