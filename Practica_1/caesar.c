@@ -5,10 +5,12 @@ int main(int argc, char* argv[]){
     if (argc != 2)
         printf("Error in retrieving the key\n");
     int key = atoi(argv[1])%25;
-    printf("Key is: %d\n", key);
     // Leemos el mensaje de la entrada estandar
-    char *stream = malloc(sizeof(char)*100);
-    read(0,stream, 100);
+    char *temp = malloc(sizeof(char)*INT_MAX);
+    int bytes_read = read(0,temp, INT_MAX);
+    char *stream = malloc(sizeof(char)*(bytes_read+1));
+    strcpy(stream, temp);
+    free(temp);
     // Le ponemos todos los caracteres a mayúsculas y cambiamos los caracteres especiales por espacios
     parse_text(stream);
     // Lo ciframos con caesar

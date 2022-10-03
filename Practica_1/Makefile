@@ -1,6 +1,6 @@
 CC = gcc
 
-FLAGS = -Wshadow -Wall -g -lm
+FLAGS = -Wshadow -Wall -g
 
 CAESAR = caesar
 
