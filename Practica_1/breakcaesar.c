@@ -17,7 +17,7 @@ int main(int argc, char* argv[]){
     float max_bi = 0;
     int max_bi_key = 0;
     char *max_bi_str = malloc(sizeof(char)*(bytes_read+1));
-    int max_tri = 0;
+    float max_tri = 0;
     int max_tri_key = 0;
     char *max_tri_str = malloc(sizeof(char)*(bytes_read+1));
     char *temp = malloc(sizeof(char)*(bytes_read+1));
@@ -44,11 +44,28 @@ int main(int argc, char* argv[]){
         }
     }
     free(temp);
-    printf("%d:%s\n", min_freq_key, min_freq_str);
+    if (min_freq_key == max_bi_key && max_bi_key == max_tri_key){
+        printf("%d:%s\n", min_freq_key, min_freq_str);
+    }
+    else if (min_freq_key == max_bi_key){
+        printf("%d:%s\n", min_freq_key, min_freq_str);
+        printf("%d:%s\n", max_tri_key, max_tri_str);
+    }
+    else if (min_freq_key == max_tri_key){
+        printf("%d:%s\n", min_freq_key, min_freq_str);
+        printf("%d:%s\n", max_bi_key, max_bi_str);
+    }
+    else if (max_bi_key == max_tri_key){
+        printf("%d:%s\n", max_bi_key, max_bi_str);
+        printf("%d:%s\n", min_freq_key, min_freq_str);
+    }
+    else{
+        printf("%d:%s\n", min_freq_key, min_freq_str);
+        printf("%d:%s\n", max_bi_key, max_bi_str);
+        printf("%d:%s\n", max_tri_key, max_tri_str);
+    }
     free(min_freq_str);
-    printf("%d:%s\n", max_bi_key, max_bi_str);
     free(max_bi_str);
-    printf("%d:%s\n", max_tri_key, max_tri_str);
     free(max_tri_str);
     free(stream);
     return 0;

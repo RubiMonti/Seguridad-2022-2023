@@ -75,7 +75,6 @@ void init_dict(dict_t *dict){
 }
 
 int find_bigram(char first, char second){
-    printf("Caracteres a analizar: %c  %c\n", first, second);    
     if (first == 'T' && second == 'H')
         return bi_th;
     else if (first == 'H' && second == 'E')
@@ -135,52 +134,39 @@ int find_bigram(char first, char second){
     return -1;
 }
 
-int find_bigram(char first, char second, char third){
-    printf("Caracteres a analizar: %c  %c\n", first, second, third);    
+int find_trigram(char first, char second, char third){
     if (first == 'T' && second == 'H' && third == 'E')
-        return tri_th;
-    else if (first == 'H' && second == 'E')
-        return tri_he;
-    else if (first == 'I' && second == 'N')
-        return tri_in;
-    else if (first == 'E' && second == 'N')
-        return tri_en;
-    else if (first == 'N' && second == 'T')
-        return tri_nt;
-    else if (first == 'R' && second == 'E')
-        return tri_re;
-    else if (first == 'E' && second == 'R')
-        return tri_er;
-    else if (first == 'A' && second == 'N')
-        return tri_an;
-    else if (first == 'T' && second == 'I')
-        return tri_ti;
-    else if (first == 'E' && second == 'S')
-        return tri_es;
-    else if (first == 'O' && second == 'N')
-        return tri_on;
-    else if (first == 'A' && second == 'T')
-        return tri_at;
-    else if (first == 'S' && second == 'E')
-        return tri_se;
-    else if (first == 'N' && second == 'D')
-        return tri_nd;
-    else if (first == 'O' && second == 'R')
-        return tri_or;
-    else if (first == 'A' && second == 'R')
-        return tri_ar;
-    else if (first == 'A' && second == 'L')
-        return tri_al;
-    else if (first == 'T' && second == 'E')
-        return tri_te;
-    else if (first == 'C' && second == 'O')
-        return tri_co;
-    else if (first == 'D' && second == 'E')
-        return tri_de;
-    else if (first == 'T' && second == 'O')
-        return tri_to;
-    else if (first == 'R' && second == 'A')
-        return tri_ra;
+        return tri_the;
+    else if (first == 'A' && second == 'N' && third == 'D')
+        return tri_and;
+    else if (first == 'T' && second == 'H' && third == 'A')
+        return tri_tha;
+    else if (first == 'E' && second == 'N' && third == 'T')
+        return tri_ent;
+    else if (first == 'I' && second == 'N' && third == 'G')
+        return tri_ing;
+    else if (first == 'I' && second == 'O' && third == 'N')
+        return tri_ion;
+    else if (first == 'T' && second == 'I' && third == 'O')
+        return tri_tio;
+    else if (first == 'F' && second == 'O' && third == 'R')
+        return tri_for;
+    else if (first == 'N' && second == 'D' && third == 'E')
+        return tri_nde;
+    else if (first == 'H' && second == 'A' && third == 'S')
+        return tri_has;
+    else if (first == 'N' && second == 'C' && third == 'E')
+        return tri_nce;
+    else if (first == 'E' && second == 'D' && third == 'T')
+        return tri_edt;
+    else if (first == 'T' && second == 'I' && third == 'S')
+        return tri_tis;
+    else if (first == 'O' && second == 'F' && third == 'T')
+        return tri_oft;
+    else if (first == 'S' && second == 'T' && third == 'H')
+        return tri_sth;
+    else if (first == 'M' && second == 'E' && third == 'N')
+        return tri_men;
     return -1;
 }
 
@@ -202,28 +188,23 @@ float compare_frequencies(dict_t dict){
     float error_sum = 0.0;
     for (int i = 0; i < 26; i++){
         error_sum += ((float)dict.letters[i]/dict.total - frequencies[i]) * ((float)dict.letters[i]/dict.total - frequencies[i]);
-        // printf("El error en esta iteración es: %f\n", ((float)dict.letters[i]/dict.total - frequencies[i]) * ((float)dict.letters[i]/dict.total - frequencies[i]));
     }
-    // printf("El error al final es es: %f\n", error_sum);
     return error_sum;
 }
 
 float compare_bigrams(dict_t dict){
     float bigrams = 0.0;
     for (int i = 0; i < 28; i++){
-        bigrams += dict.bigrams[i] * (28-i)/(float)406; // Thats a proportion: 28+27+...+1 = 406
-        // printf("El bigrama %d ha salido %d veces.\n", i, dict.bigrams[i]);
+        bigrams += dict.bigrams[i] * (28-i)/(float)406; // This is a proportion: 28+27+...+1 = 406
     }
-    printf("El numero de bigramas al final es es: %f\n", bigrams);
     return bigrams;
 }
 
 float compare_trigrams(dict_t dict){
     float trigrams = 0.0;
     for (int i = 0; i < 16; i++){
-        trigrams += dict.trigrams[i] * (16-i)/(float)136; // Thats a proportion: 16+15+...+1 = 136
+        trigrams += dict.trigrams[i] * (16-i)/(float)136; // This is a proportion: 16+15+...+1 = 136
     }
-    printf("El numero de trigramas al final es es: %f\n", trigrams);
     return trigrams;
 }
 
@@ -249,15 +230,13 @@ void breakcaesar(char *stream, int key, dict_t *dict){
                 stream[i] += 26;
             dict->letters[stream[i]-65] = dict->letters[stream[i]-65] + 1;
             dict->total = dict->total + 1;
-            if (i-1 > 0){
+            if (i-1 >= 0){
                 index_bigram = find_bigram(stream[i-1], stream[i]);
-                printf("El bigrama encontrado es: %d\n", index_bigram);
                 if (index_bigram != -1)
                     dict->bigrams[index_bigram] = dict->bigrams[index_bigram] + 1;
             }
-            if (i-2 > 0){
-                index_trigram = find_bigram(stream[i-2], stream[i-1], stream[i]);
-                printf("El bigrama encontrado es: %d\n", index_trigram);
+            if (i-2 >= 0){
+                index_trigram = find_trigram(stream[i-2], stream[i-1], stream[i]);
                 if (index_trigram != -1)
                     dict->trigrams[index_trigram] = dict->trigrams[index_trigram] + 1;
             }
