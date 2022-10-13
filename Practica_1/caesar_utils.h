@@ -10,8 +10,7 @@
 # include <fcntl.h>
 # include <limits.h>
 
-//# include <sys/wait.h>
-
+// Estructura que usaremos para almacenar las frecuencias de las letras, los bigramas y los trigramas
 typedef struct s_dict{
     int letters[26];
     int bigrams[28];
