@@ -27,6 +27,7 @@ int main(int argc, char* argv[]){
         init_dict(&dict);
         // Rompemos caesar con cada clave
         breakcaesar(temp, key, &dict);
+        // Comparamos tanto la frecuencia de caracteres como los bigramas y trigramas
         if (compare_frequencies(dict) < min_freq_err){
             min_freq_err = compare_frequencies(dict);
             min_freq_key = key;
@@ -44,6 +45,7 @@ int main(int argc, char* argv[]){
         }
     }
     free(temp);
+    // Comprobamos cual es el caso que más se da e imprimimos todos los casos que sean distintos
     if (min_freq_key == max_bi_key && max_bi_key == max_tri_key){
         printf("%d:%s\n", min_freq_key, min_freq_str);
     }
