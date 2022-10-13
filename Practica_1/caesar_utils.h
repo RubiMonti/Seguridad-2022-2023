@@ -21,7 +21,6 @@ typedef struct s_dict{
 
 void parse_text(char *stream);
 void init_dict(dict_t *dict);
-void print_frequencies(dict_t dict);
 float compare_frequencies(dict_t dict);
 float compare_bigrams(dict_t dict);
 float compare_trigrams(dict_t dict);
