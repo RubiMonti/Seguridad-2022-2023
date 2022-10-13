@@ -1,5 +1,6 @@
 #include "caesar_utils.h"
 
+// Enumeracion que servira para indexar el vector de bigramas
 enum BIGRAMS{
     bi_th = 0,
     bi_he,
@@ -31,6 +32,7 @@ enum BIGRAMS{
     bi_ro,
 } all_bigrams;
 
+// Enumeracion que servira para indexar el vector de trigramas
 enum TRIGRAMS{
     tri_the = 0,
     tri_and,
@@ -74,6 +76,7 @@ void init_dict(dict_t *dict){
     dict->total = 0;
 }
 
+// Con esta funcion comprobamos si existe un bigrama en dos letras que se introducen como parametros
 int find_bigram(char first, char second){
     if (first == 'T' && second == 'H')
         return bi_th;
@@ -134,6 +137,7 @@ int find_bigram(char first, char second){
     return -1;
 }
 
+// Con esta funcion comprobamos si existe un trigrama en las tres letras que se introducen como parametros
 int find_trigram(char first, char second, char third){
     if (first == 'T' && second == 'H' && third == 'E')
         return tri_the;
@@ -170,15 +174,9 @@ int find_trigram(char first, char second, char third){
     return -1;
 }
 
-// Función de depuración que imprime la frecuencia de cada letra
-void print_frecuencies(dict_t dict){
-    for (int i = 0; i < 26; i++){
-        printf("Parea el caracter %c\n\tLa frecuencia es: %d\n\tEl total es: %d\n\tEl porcentaje es: %f\n", i + 65, dict.letters[i], dict.total, (float)dict.letters[i]/dict.total);
-    }
-}
-
 // Función que compara las frecuencias con las que tiene el idioma inglés
 float compare_frequencies(dict_t dict){
+    // El vector que hay a continuacion esta sacado de la referencia adjunta al enunciado
     float frequencies[26] = {0.08167, 0.01492, 0.02782, 0.04253, 0.12702,
                                     0.02228, 0.02015, 0.06094, 0.06966, 0.00153,
                                     0.00772, 0.04025, 0.02406, 0.06749, 0.07507,
@@ -192,18 +190,20 @@ float compare_frequencies(dict_t dict){
     return error_sum;
 }
 
+// Comprobamos cuantos bigramas salen y los ponderamos segun su uso en el idoma ingles
 float compare_bigrams(dict_t dict){
     float bigrams = 0.0;
     for (int i = 0; i < 28; i++){
-        bigrams += dict.bigrams[i] * (28-i)/(float)406; // This is a proportion: 28+27+...+1 = 406
+        bigrams += dict.bigrams[i] * (28-i)/(float)406; // Esta es una proporcion: 28+27+...+1 = 406
     }
     return bigrams;
 }
 
+// Comprobamos cuantos trigramas salen y los ponderamos segun su uso en el idoma ingles
 float compare_trigrams(dict_t dict){
     float trigrams = 0.0;
     for (int i = 0; i < 16; i++){
-        trigrams += dict.trigrams[i] * (16-i)/(float)136; // This is a proportion: 16+15+...+1 = 136
+        trigrams += dict.trigrams[i] * (16-i)/(float)136; // Esta es una proporcion: 16+15+...+1 = 136
     }
     return trigrams;
 }
