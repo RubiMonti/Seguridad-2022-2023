@@ -85,11 +85,26 @@ alguna de las versiones fue publicada por el profesor? ¿Cuál o cuáles?
 
 RESPUESTA:
 ====================================================
+Al verificar los tres ficheros obtenemos los siguientes datos de salida:
 
+$ gpg --verify e1.txt 
+gpg: Firmado el mar 18 oct 2022 19:19:11 CEST
+gpg:                usando RSA clave C7DC3D54399FC39D290A61C9A8D6D9F50054BBA6
+gpg: Firma INCORRECTA de "Enrique Soriano-Salvador <enrique.soriano@urjc.es>" [total]
+$ gpg --verify e2.txt 
+gpg: Firmado el mar 18 oct 2022 19:19:11 CEST
+gpg:                usando RSA clave C7DC3D54399FC39D290A61C9A8D6D9F50054BBA6
+gpg: Firma correcta de "Enrique Soriano-Salvador <enrique.soriano@urjc.es>" [total]
+gpg:                 alias "Enrique Soriano-Salvador <esoriano@gsyc.urjc.es>" [total]
+gpg:                 alias "Enrique Soriano-Salvador <enrique.soriano@gmail.com>" [total]
+$ gpg --verify e3.txt 
+gpg: Firmado el mar 18 oct 2022 19:19:11 CEST
+gpg:                usando RSA clave C7DC3D54399FC39D290A61C9A8D6D9F50054BBA6
+gpg: Firma INCORRECTA de "Enrique Soriano-Salvador <enrique.soriano@urjc.es>" [total]
 
-
-
-
+Por estos datos podemos decir que el único fichero que podemos asegurar que está
+escrito por el profesor es el segundo de ellos ya que es el único que está 
+firmado correctamente
 
 ====================================================
 
@@ -99,11 +114,10 @@ y descífrelo. El secreto para descifrar el fichero es TOPSECRET.
 
 RESPUESTA:
 ====================================================
-
-
-
-
-
+Tras descifrarlo podemos ver que estaba cifrado en AES con una clave de 256 bits.
+El mensaje en claro nos devuelve un chorro de datos sin sentido con símbolos que no 
+se pueden representar. Pero al hacer file del fichero vemos que es una imagen en JPEG.
+Podemos ver la imagen de JPEG con el visor de archivos en la que aparece un tigre.
 
 ====================================================
 
@@ -130,11 +144,16 @@ usada para descifrar el fichero.
 
 RESPUESTA:
 ====================================================
+Para comprobar si el mensaje que hemos recibido oculta otro en su 
+interior, usaremos el comando steghide. Este comando nos dirá si hay
+algún mensaje dentro de la foto del tigre. Lo comprobaremos con la
+contraseña que hemos usado anteriormente
 
+$ steghide extract -sf output.jpeg
+Anotar salvoconducto:
+BASE64 NO ES CIFRADO
 
-
-
-
+El mensaje oculto es BASE64 NO ES CIFRADO
 
 ====================================================
 
@@ -146,11 +165,11 @@ el modo CBC.
 
 COMANDOS:
 ====================================================
+Para el cifrado con gpg hemos usado el siguiente comando:
+$ gpg --output gpg_cypher.gpg --symmetric --cipher-algo AES-256 output.jpeg
 
-
-
-
-
+Y para el cifrado con openssl el siguiente:
+$ openssl aes-256-cbc -in output.jpeg -out openssl_cypher.ssl
 
 ====================================================
 
@@ -159,11 +178,15 @@ COMANDOS:
 
 COMANDO Y RESPUESTA:
 ====================================================
+Para ambos casos hemos usado openssl para hallar la hash de los ficheros:
+$ openssl dgst -sha1 gpg_cypher.gpg 
+SHA1(gpg_cypher.gpg)= f13ff75d2004231d3fba102c67779e8d6b40712a
 
+$ openssl dgst -sha1 openssl_cypher.ssl 
+SHA1(openssl_cypher.ssl)= d9027c50f17a01046ccf974eaee2518a60e272ca
 
-
-
-
+Podemos ver que las tablas son distintas ya que a pesar de usar el mismo
+algoritmo de cifrado, cada vez se usará un vector de inicialización  
 
 ====================================================
 
