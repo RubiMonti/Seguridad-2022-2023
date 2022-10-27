@@ -130,11 +130,15 @@ mensaje?
 
 RESPUESTA:
 ====================================================
+Para analizar la firma hacemos lo siguiente:
+$ gpg --verify secret.sig 
+gpg: no hay datos firmados
+gpg: can't hash datafile: No hay datos
 
-
-
-
-
+Podemos ver que los datos no han sido firmados por lo que el profesor podría 
+repudiar el mensaje ya que no hay certificación de que haya sido él el que lo ha 
+enviado. Por esa misma razón los datos que tenemos podrían haber sido enviados por
+un atacante y por tanto estar modificados.
 
 ====================================================
 
@@ -186,7 +190,8 @@ $ openssl dgst -sha1 openssl_cypher.ssl
 SHA1(openssl_cypher.ssl)= d9027c50f17a01046ccf974eaee2518a60e272ca
 
 Podemos ver que las tablas son distintas ya que a pesar de usar el mismo
-algoritmo de cifrado, cada vez se usará un vector de inicialización  
+algoritmo de cifrado, cada vez se usará un vector de inicialización distinto
+para que el resultado del cifrado no sea el mismo y pueda ser descifrado 
 
 ====================================================
 
@@ -196,11 +201,16 @@ un comando Unix para comparar dos ficheros:
 
 COMANDOS:
 ====================================================
+$ openssl aes-256-cbc -d -in openssl_cypher.ssl -out output-ssl.jpeg
+enter AES-256-CBC decryption password:
+$ gpg -d --output output-gpg.jpeg gpg_cypher.gpg 
+gpg: datos cifrados AES256.CFB
+gpg: cifrado con 1 frase contraseña
+$ diff output-gpg.jpeg output-ssl.jpeg 
 
+$
 
-
-
-
+Podemos ver que diff no devuelve nada, es decir, los ficheros son idénticos
 
 ====================================================
 
@@ -211,11 +221,18 @@ creación. Indique su número de serie:
 
 COMANDOS:
 ====================================================
+Para crear el certificado hemos usado el siguiente comando:
+$ openssl req -new -nodes -x509 -newkey 4096 -out cert.pem -keyout \
+privkey.pem -days 365 -subj "/C=ES/ST=MAD/L=Fuenlabrada/O=ACME/ \
+OU=ACME/CN=www.acme.org/emailAddress=pepe@acme.jp"
 
+Eso nos devolverá el fichero cert.pem que con el siguiente comando lo 
+podemos ver en texto plano:
+$ openssl x509 -in cert.pem -inform PEM -text
 
-
-
-
+Este comando nos devuelve todo el certificado pero sólo nos fijaremos en
+el número de serie que es:
+44:a9:7a:7f:70:03:a0:62:41:88:13:22:2b:51:35:e9:99:e5:5b:a1
 
 ====================================================
 
@@ -225,11 +242,23 @@ el certificado con el comando openssl.
 
 RESPUESTA:
 ====================================================
+Para comprobar el certificado de www.urjc.es vamos a la página y allí 
+podemos ver que el número de serie es:
+00:D7:7D:09:D0:55:F4:78:00:DB:85:23:0A:81:D3:0D:D4
+y que el fingerprint en SHA1 es:
+C2:62:05:C4:1B:5C:34:29:16:FF:76:28:C1:E2:DB:DE:AF:21:CB:34
+y que es válido para los dominios de www.urjc.es y urjc.es
 
+Después nos descargamos el certificado para comprobarlo con el comando 
+de openssl:
+$ openssl x509 -in www-urjc-es.pem -inform PEM -text
 
+Confirmamos que su número de serie es:
+d7:7d:09:d0:55:f4:78:00:db:85:23:0a:81:d3:0d:d4
 
-
-
+Y con el siguiente comando comprobamos su fingerprint:
+$ openssl x509 -in www-urjc-es.pem -noout -sha1 -fingerprint
+sha1 Fingerprint=C2:62:05:C4:1B:5C:34:29:16:FF:76:28:C1:E2:DB:DE:AF:21:CB:34
 
 ====================================================
 
