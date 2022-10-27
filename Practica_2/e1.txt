@@ -269,11 +269,16 @@ del sistema se encuentran en el directorio /etc/ssl/certs.
 
 RESPUESTA:
 ====================================================
+Para comprobar si la cadena de certificados es correcta, nos descargaremos todos
+los certificados intermedios y el certificado de la CA, y los introduciremos como
+parámetros en el siguiente comando:
 
+$ openssl verify -verbose -CAfile <(cat www-urjc-es_CA.pem www-urjc-es_int1.pem) \
+www-urjc-es.pem 
+www-urjc-es.pem: OK
 
-
-
-
+Podemos ver que el certificado es correcto ya que es podible recorrer el camino que
+lleva hasta una Autoridad Certificadora.
 
 ====================================================
 
